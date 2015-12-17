@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.tascape.qa.android.demo.driver.Clock;
 import com.tascape.qa.android.demo.test.ClockTests;
+import com.tascape.qa.android.demo.test.DeviceTests;
 import com.tascape.qa.th.android.driver.UiAutomatorDevice;
 import com.tascape.qa.th.android.suite.UiAutomatorTestSuite;
 import com.tascape.qa.th.suite.AbstractSuite;
@@ -37,15 +38,16 @@ public class SmokeSuite extends AbstractSuite implements UiAutomatorTestSuite {
     @Override
     public void setUpTestClasses() {
         this.addTestClass(ClockTests.class);
+        this.addTestClass(DeviceTests.class);
     }
 
     @Override
     protected void setUpEnvironment() throws Exception {
         device = this.getAvailableDevice();
-
         app.attachTo(device);
-        app.launch();
         device.takeDeviceScreenshot();
+
+        this.putTestDirver(DeviceTests.MOBILE_DEVICE, device);
 
         this.putTestDirver(ClockTests.MOBILE_DEVICE, device);
         this.putTestDirver(ClockTests.MOVIES_APP, app);
