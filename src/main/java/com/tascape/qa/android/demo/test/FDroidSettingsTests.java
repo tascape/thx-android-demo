@@ -15,13 +15,13 @@
  */
 package com.tascape.qa.android.demo.test;
 
-import com.tascape.qa.android.demo.driver.Clock;
+import com.tascape.qa.android.demo.driver.FDroid;
+import com.tascape.qa.android.demo.driver.Settings;
 import com.tascape.qa.th.android.driver.UiAutomatorDevice;
-import com.tascape.qa.th.data.TestDataProvider;
-import com.tascape.qa.th.data.TestIterationData;
 import org.junit.Test;
 import com.tascape.qa.th.driver.TestDriver;
 import com.tascape.qa.th.test.AbstractTest;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Assert;
@@ -29,26 +29,29 @@ import org.junit.Before;
 import org.junit.rules.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static com.tascape.qa.android.demo.driver.Settings.UPDATE_INTERVALS;
 
 /**
  *
  * @author linsong wang
  */
-public class ClockTests extends AbstractTest {
-    private static final Logger LOG = LoggerFactory.getLogger(ClockTests.class);
+public class FDroidSettingsTests extends AbstractTest {
+    private static final Logger LOG = LoggerFactory.getLogger(FDroidSettingsTests.class);
 
-    public static final TestDriver MOBILE_DEVICE = new TestDriver(ClockTests.class, UiAutomatorDevice.class);
+    public static final TestDriver MOBILE_DEVICE = new TestDriver(FDroidSettingsTests.class, UiAutomatorDevice.class);
 
-    public static final TestDriver MOVIES_APP = new TestDriver(ClockTests.class, Clock.class);
+    public static final TestDriver MOBILE_APP = new TestDriver(FDroidSettingsTests.class, FDroid.class);
 
     private final UiAutomatorDevice device;
 
-    private final Clock app;
+    private final FDroid app;
 
-    public ClockTests() {
+    private Settings settings;
+
+    public FDroidSettingsTests() {
         this.globalTimeout = new Timeout(5, TimeUnit.MINUTES);
         this.device = super.getEntityDriver(MOBILE_DEVICE);
-        this.app = super.getEntityDriver(MOVIES_APP);
+        this.app = super.getEntityDriver(MOBILE_APP);
     }
 
     @Before
@@ -56,6 +59,7 @@ public class ClockTests extends AbstractTest {
         device.backToHome();
         app.launch();
         device.takeDeviceScreenshot();
+        this.settings = app.openSettings();
     }
 
     @After
@@ -64,9 +68,15 @@ public class ClockTests extends AbstractTest {
     }
 
     @Test
-    @TestDataProvider(klass = TestIterationData.class, method = "useIterations", parameter = "9")
-    public void testRandomAlarm() throws Exception {
-        Assert.fail();
+    public void testAutoUpdateInterval() throws Exception {
+        for (Map.Entry<String, String> intervalEntry : UPDATE_INTERVALS.entrySet()) {
+            String interval = intervalEntry.getKey();
+            LOG.info("set auto update interval to '{}'", interval);
+            settings.setAutoUpdateInterval(interval);
+            device.takeDeviceScreenshot();
+            Assert.assertEquals("Update interval is not updated,", intervalEntry.getValue(),
+                settings.getAUtoUpdateInterval());
+        }
     }
 
     @Override

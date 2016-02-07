@@ -17,8 +17,8 @@ package com.tascape.qa.android.demo.suite;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.tascape.qa.android.demo.driver.Clock;
-import com.tascape.qa.android.demo.test.ClockTests;
+import com.tascape.qa.android.demo.driver.FDroid;
+import com.tascape.qa.android.demo.test.FDroidSettingsTests;
 import com.tascape.qa.android.demo.test.DeviceTests;
 import com.tascape.qa.th.android.driver.UiAutomatorDevice;
 import com.tascape.qa.th.android.suite.UiAutomatorTestSuite;
@@ -31,26 +31,26 @@ import com.tascape.qa.th.suite.AbstractSuite;
 public class SmokeSuite extends AbstractSuite implements UiAutomatorTestSuite {
     private static final Logger LOG = LoggerFactory.getLogger(SmokeSuite.class);
 
-    private final Clock app = new Clock();
+    private final FDroid droid = new FDroid();
 
     private UiAutomatorDevice device;
 
     @Override
     public void setUpTestClasses() {
-        this.addTestClass(ClockTests.class);
+        this.addTestClass(FDroidSettingsTests.class);
         this.addTestClass(DeviceTests.class);
     }
 
     @Override
     protected void setUpEnvironment() throws Exception {
         device = this.getAvailableDevice();
-        app.attachTo(device);
+        droid.attachTo(device);
         device.takeDeviceScreenshot();
 
         this.putTestDirver(DeviceTests.MOBILE_DEVICE, device);
 
-        this.putTestDirver(ClockTests.MOBILE_DEVICE, device);
-        this.putTestDirver(ClockTests.MOVIES_APP, app);
+        this.putTestDirver(FDroidSettingsTests.MOBILE_DEVICE, device);
+        this.putTestDirver(FDroidSettingsTests.MOBILE_APP, droid);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class SmokeSuite extends AbstractSuite implements UiAutomatorTestSuite {
 
     @Override
     public String getProductUnderTest() {
-        return app.getName();
+        return droid.getName();
     }
 
     @Override
@@ -70,6 +70,7 @@ public class SmokeSuite extends AbstractSuite implements UiAutomatorTestSuite {
         return "thx-android-demo";
     }
 
+    @Override
     public int getNumberOfEnvs() {
         return SERIALS.size();
     }

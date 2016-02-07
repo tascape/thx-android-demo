@@ -21,7 +21,9 @@ import com.tascape.qa.th.data.TestIterationData;
 import org.junit.Test;
 import com.tascape.qa.th.driver.TestDriver;
 import com.tascape.qa.th.test.AbstractTest;
+import java.awt.Dimension;
 import java.io.File;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import org.junit.After;
 import org.junit.Before;
@@ -57,15 +59,34 @@ public class DeviceTests extends AbstractTest {
     }
 
     @Test
-    @TestDataProvider(klass = TestIterationData.class, method = "useIterations", parameter = "3")
+    @TestDataProvider(klass = TestIterationData.class, method = "useIterations", parameter = "2")
     public void testScreenRecording() throws Exception {
         int seconds = 10;
         String mp4 = device.recordScreen(seconds, 512000);
 
-        LOG.info("Please interact with touch screen for {} seconds", seconds);
-        Thread.sleep(seconds * 1100L);
-        LOG.info("Done recording");
+        LOG.info("randomly touch screen for {} seconds", seconds);
+        Dimension rect = device.getScreenDimension();
+        Random r = new Random();
+        Thread t = new Thread(Thread.currentThread().getName() + "-random-click") {
+            @Override
+            public void run() {
+                long end = System.currentTimeMillis() + seconds * 1000 + 2000;
+                while (System.currentTimeMillis() < end) {
+                    int x = r.nextInt(rect.width);
+                    int y = r.nextInt(rect.height);
+                    device.click(x, y);
+                }
+            }
+        };
+        t.start();
+        t.join();
+        LOG.info("done recording");
+
         File f = device.getScreenRecord(mp4);
+        File file = this.createDataFile("screen-recording", "mp4");
+        file.delete();
+        f.renameTo(file);
+        LOG.info("screen recording file {}", file.getAbsolutePath());
     }
 
     @Override

@@ -15,7 +15,9 @@
  */
 package com.tascape.qa.android.demo.driver;
 
+import com.android.uiautomator.stub.UiSelector;
 import com.tascape.qa.th.android.driver.App;
+import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,12 +25,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author linsong wang
  */
-public class Clock extends App {
-    private static final Logger LOG = LoggerFactory.getLogger(Clock.class);
+public class FDroid extends App {
+    private static final Logger LOG = LoggerFactory.getLogger(FDroid.class);
 
-    public static final String PACKAGE_NAME = "com.android.deskclock";
+    public static final String PACKAGE_NAME = "org.fdroid.fdroid";
 
-    public static final String NAME = "Clock";
+    public static final String NAME = "F-Droid";
 
     @Override
     public String getPackageName() {
@@ -40,6 +42,20 @@ public class Clock extends App {
         return NAME;
     }
 
+    public Settings openSettings() throws IOException {
+        this.uiObject.useUiObjectSelector(new UiSelector().resourceId("org.fdroid.fdroid:id/action_bar"));
+        this.uiObject.selectChild(new UiSelector().index(1));
+        this.uiObject.selectChild(new UiSelector().index(2));
+        this.uiObject.click();
+        this.uiaDevice.takeDeviceScreenshot();
+
+        this.uiCollection.useUiCollectionSelector(new UiSelector().className("android.widget.ListView"));
+        this.uiCollection.selectChild(new UiSelector().index(3));
+        this.uiCollection.click();
+        this.uiaDevice.takeDeviceScreenshot();
+        return new Settings(this);
+    }
+
     @Override
     public void reset() throws Exception {
         LOG.debug("na");
@@ -47,6 +63,6 @@ public class Clock extends App {
 
     @Override
     public int getLaunchDelayMillis() {
-        return 2000;
+        return 5000;
     }
 }
