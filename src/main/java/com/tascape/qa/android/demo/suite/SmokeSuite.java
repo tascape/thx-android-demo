@@ -20,9 +20,11 @@ import org.slf4j.LoggerFactory;
 import com.tascape.qa.android.demo.driver.FDroid;
 import com.tascape.qa.android.demo.test.FDroidSettingsTests;
 import com.tascape.qa.android.demo.test.DeviceTests;
+import com.tascape.qa.th.android.driver.App;
 import com.tascape.qa.th.android.driver.UiAutomatorDevice;
 import com.tascape.qa.th.android.suite.UiAutomatorTestSuite;
 import com.tascape.qa.th.suite.AbstractSuite;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  *
@@ -44,6 +46,11 @@ public class SmokeSuite extends AbstractSuite implements UiAutomatorTestSuite {
     @Override
     protected void setUpEnvironment() throws Exception {
         device = this.getAvailableDevice();
+        String apk = SYSCONFIG.getProperty(App.SYSPROP_APK_PATH);
+        if (StringUtils.isNotEmpty(apk)) {
+            device.uninstall(droid.getPackageName());
+            device.install(apk);
+        }
         droid.attachTo(device);
         device.takeDeviceScreenshot();
 
