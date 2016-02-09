@@ -45,12 +45,12 @@ public class FDroid extends App {
     public Settings openSettings() throws IOException {
         this.uiObject.useUiObjectSelector(new UiSelector().resourceId("org.fdroid.fdroid:id/action_bar"));
         this.uiObject.selectChild(new UiSelector().index(1));
-        this.uiObject.selectChild(new UiSelector().index(2));
+        this.uiObject.selectChild(new UiSelector().className("android.widget.ImageView"));
         this.uiObject.click();
         this.uiaDevice.takeDeviceScreenshot();
 
         this.uiCollection.useUiCollectionSelector(new UiSelector().className("android.widget.ListView"));
-        this.uiCollection.selectChild(new UiSelector().index(3));
+        this.uiCollection.selectChild(new UiSelector().text("Settings"));
         this.uiCollection.click();
         this.uiaDevice.takeDeviceScreenshot();
         return new Settings(this);
