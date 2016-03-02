@@ -34,7 +34,6 @@ public class Settings {
 
     public static final Map<String, String> UPDATE_INTERVALS = new HashMap<String, String>() {
         {
-            put("Never", "No automatic app list updates");
             put("Hourly", "Hourly");
             put("Every 4 hours", "Every 4 hours");
             put("Every 12 hours", "Every 12 hours");
@@ -57,7 +56,7 @@ public class Settings {
     public String getAUtoUpdateInterval() {
         this.uiObject.useUiObjectSelector(new UiSelector().resourceId("android:id/list"));
         this.uiObject.selectChild(new UiSelector().index(1));
-        this.uiObject.selectChild(new UiSelector().index(0));
+        this.uiObject.selectChild(new UiSelector().index(1));
         this.uiObject.selectChild(new UiSelector().index(1));
         return this.uiObject.getText();
     }
