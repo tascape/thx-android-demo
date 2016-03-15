@@ -24,6 +24,7 @@ import com.tascape.qa.th.android.driver.App;
 import com.tascape.qa.th.android.driver.UiAutomatorDevice;
 import com.tascape.qa.th.android.suite.UiAutomatorTestSuite;
 import com.tascape.qa.th.suite.AbstractSuite;
+import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -51,7 +52,7 @@ public class SmokeSuite extends AbstractSuite implements UiAutomatorTestSuite {
             device.uninstall(droid.getPackageName());
             device.install(apk);
         }
-        droid.attachTo(device);
+        device.install(droid);
         device.takeDeviceScreenshot();
 
         this.putTestDirver(DeviceTests.MOBILE_DEVICE, device);
@@ -63,7 +64,11 @@ public class SmokeSuite extends AbstractSuite implements UiAutomatorTestSuite {
     @Override
     protected void tearDownEnvironment() {
         if (device != null) {
-            device.stop();
+            try {
+                device.stop();
+            } catch (IOException ex) {
+                LOG.warn(ex.getMessage());
+            }
         }
     }
 

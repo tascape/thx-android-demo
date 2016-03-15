@@ -47,12 +47,11 @@ public class FDroid extends App {
         this.uiObject.selectChild(new UiSelector().index(1));
         this.uiObject.selectChild(new UiSelector().className("android.widget.ImageView"));
         this.uiObject.click();
-        this.uiaDevice.takeDeviceScreenshot();
+        this.device.takeDeviceScreenshot();
 
-        this.uiCollection.useUiCollectionSelector(new UiSelector().className("android.widget.ListView"));
-        this.uiCollection.selectChild(new UiSelector().text("Settings"));
-        this.uiCollection.click();
-        this.uiaDevice.takeDeviceScreenshot();
+        this.uiObject.useUiObjectSelector(new UiSelector().text("Settings"));
+        this.uiObject.click();
+        this.device.takeDeviceScreenshot();
         return new Settings(this);
     }
 

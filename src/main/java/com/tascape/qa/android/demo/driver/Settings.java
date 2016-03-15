@@ -45,7 +45,7 @@ public class Settings {
     };
 
     public Settings(App droid) {
-        this.device = droid.getUiaDevice();
+        this.device = droid.getDevice();
         this.uiObject = device.getUiObject();
     }
 
