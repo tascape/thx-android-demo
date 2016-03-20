@@ -57,7 +57,6 @@ public class Settings {
         this.uiObject.useUiObjectSelector(new UiSelector().resourceId("android:id/list"));
         this.uiObject.selectChild(new UiSelector().index(1));
         this.uiObject.selectChild(new UiSelector().index(1));
-        this.uiObject.selectChild(new UiSelector().index(1));
         return this.uiObject.getText();
     }
 }
