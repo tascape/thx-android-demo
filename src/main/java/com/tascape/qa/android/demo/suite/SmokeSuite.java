@@ -84,6 +84,6 @@ public class SmokeSuite extends AbstractSuite implements UiAutomatorTestSuite {
 
     @Override
     public int getNumberOfEnvs() {
-        return SERIALS.size();
+        return DEVICES.size();
     }
 }
