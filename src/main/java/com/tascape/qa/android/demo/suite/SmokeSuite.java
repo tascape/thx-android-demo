@@ -24,7 +24,6 @@ import com.tascape.qa.th.android.driver.App;
 import com.tascape.qa.th.android.driver.UiAutomatorDevice;
 import com.tascape.qa.th.android.suite.UiAutomatorTestSuite;
 import com.tascape.qa.th.suite.AbstractSuite;
-import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 
 /**
